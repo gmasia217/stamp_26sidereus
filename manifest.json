@@ -1,0 +1,20 @@
+{
+  "name": "시데레우스 관극 기록",
+  "short_name": "시데레우스",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080c13",
+  "theme_color": "#080c13",
+  "icons": [
+    {
+      "src": "sidereus_icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "sidereus_icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
