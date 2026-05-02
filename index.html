@@ -103,15 +103,6 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 .dt-label { color: var(--red); font-weight: 600; margin-right: 12px; width: 40px; text-shadow: 0 0 5px rgba(252,238,167,0.3); }
 .dt-value { color: var(--txt); font-weight: 600; }
 
-/* MINI SEAT GRID */
-.mini-hm-container { display: flex; flex-direction:column; gap: 16px; align-items: center; margin: 16px 0; border: 1px solid var(--brd2); padding: 16px; border-radius: 8px; background: var(--bg); overflow-x:auto;}
-.mini-zone-block { display:flex; flex-direction:column; gap:2px; align-items:center; }
-.mini-seat-row { display:flex; gap:2px; justify-content:center; }
-.mini-seat-cell { width:10px; height:10px; background:var(--bg4); border-radius:2px; flex-shrink:0; border:1px solid transparent; }
-.mini-seat-cell.highlight { background: var(--seat4); box-shadow: 0 0 6px var(--seat4); border-color: var(--seat4); }
-.mini-seat-cell.hidden { background: transparent; border-color:transparent; }
-.mini-row-label { font-size:8px; width:12px; text-align:right; color:var(--txt4); margin-right:4px; line-height:10px; }
-
 /* CALENDAR & EVENTS */
 .cal-filter-group { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
 .cal-filter-label { font-size:12px; color:var(--txt2); width:50px; font-weight:700; }
@@ -152,18 +143,29 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 .collapsible-content { display:none; margin-top:12px; border-top:1px dashed var(--brd2); padding-top:12px; }
 .collapsible-content.open { display:block; }
 
-/* HEATMAP */
-.heatmap-wrap { display:flex; flex-direction:column; gap:20px; align-items:center; overflow-x:auto; padding-bottom:10px; }
+/* HEATMAP & MINIMAP (정교한 커스텀 레이아웃 반영) */
+.heatmap-wrap { display:flex; flex-direction:column; gap:30px; align-items:center; overflow-x:auto; padding-bottom:15px; }
+.mini-hm-container { display:flex; flex-direction:column; gap:20px; align-items:center; margin:16px 0; border:1px solid var(--brd2); padding:20px; border-radius:8px; background:var(--bg); overflow-x:auto;}
+
 .zone-col { display:flex; flex-direction:column; gap:3px; align-items:center; }
 .seat-row { display:flex; gap:3px; align-items:center; }
-.row-label { font-size:9px; width:12px; text-align:right; color:var(--txt3); margin-right:4px; font-weight:700; }
+.row-label { font-size:9px; width:12px; text-align:center; color:var(--txt3); margin-right:4px; font-weight:700; }
 .seat-cell { width:12px; height:12px; background:var(--bg4); border-radius:2px; border:1px solid transparent; flex-shrink:0; }
+.seat-aisle { width:8px; flex-shrink:0; }
+
+.mini-seat-row { display:flex; gap:2px; justify-content:center; align-items:center; }
+.mini-seat-cell { width:10px; height:10px; background:var(--bg4); border-radius:2px; flex-shrink:0; border:1px solid transparent; }
+.mini-seat-aisle { width:6px; flex-shrink:0; }
+.mini-row-label { font-size:8px; width:12px; text-align:center; color:var(--txt4); margin-right:4px; line-height:10px; font-weight:600;}
+
 .seat-cell.v1 { background:var(--seat1); border-color:var(--seat1); } 
 .seat-cell.v2 { background:var(--seat2); border-color:var(--seat2); }
 .seat-cell.v3 { background:var(--seat3); border-color:var(--seat3); } 
 .seat-cell.v4 { background:var(--seat4); border-color:var(--seat4); box-shadow:0 0 3px var(--seat4); }
 .seat-cell.v5 { background:var(--seat5); border-color:var(--seat5); box-shadow:0 0 5px var(--seat5); }
-.seat-cell.hidden { background:transparent; border-color:transparent; }
+.seat-cell.hidden, .mini-seat-cell.hidden { background:transparent; border-color:transparent; pointer-events:none; box-shadow:none; }
+.mini-seat-cell.highlight { background: var(--seat4); box-shadow: 0 0 6px var(--seat4); border-color: var(--seat4); }
+
 .heatmap-legend { display:flex; gap:10px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
 .legend-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txt); font-weight:600; }
 .legend-dot { width:12px; height:12px; border-radius:2px; }
@@ -373,7 +375,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <label class="flbl">좌석 정보 (층 / 열 / 번호)</label>
       <div style="display:flex; gap:10px;">
         <select id="rm-zone" class="fselect" style="flex:1;"><option value="">층 선택</option><option value="1층">1층</option><option value="2층">2층</option></select>
-        <input type="text" id="rm-row" class="finput" style="flex:1; text-transform:uppercase;" placeholder="열 (A~T)">
+        <input type="text" id="rm-row" class="finput" style="flex:1; text-transform:uppercase;" placeholder="열 (A~T, V, W)">
         <input type="number" id="rm-num" class="finput" style="flex:1;" placeholder="번호" min="1">
       </div>
     </div>
@@ -479,8 +481,6 @@ const CONFIG = {
   
   DISCOUNTS: [
     { label: "없음", value: "" },
-    { label: "프리뷰", value: "프리뷰" },
-    { label: "조예할", value: "조예할" },
     { label: "재관할", value: "재관할", useWallet: "re" },
     { label: "40% 할인권", value: "40%", useWallet: "d40" },
     { label: "현장예매 50% 할인권", value: "50%", useWallet: "d50_onsite" },
@@ -497,38 +497,40 @@ const CONFIG = {
 };
 
 // ============================================================
-// 플러스씨어터 좌석 데이터 구조
-// 첨부된 코드와 이미지를 기반으로 각 열별로 정확한 렌더링을 위해 세분화
+// 플러스씨어터 좌석 데이터 (정교한 커스텀 맵핑)
+// 'a': 통로(aisle), null: 빈 공간
 // ============================================================
 const THEATER_ZONES = [
-  { 
-    name: '1층', 
+  {
+    name: '1층',
+    left: { id: 'V', map: [1,2,3,4, null, 5,6,7,8, null, 9,10,11,12, null, 13,14,15,16] },
+    right: { id: 'W', map: [1,2,3,4, null, 5,6, null, 7,8,9,10, null, 11,12,13,14] },
     rows: [
-      { id: 'A', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 16,17,18,19] },
-      { id: 'B', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 16,17,18,19] },
-      { id: 'C', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'D', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'E', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'F', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'G', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'H', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'I', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'J', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'K', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
-      { id: 'L', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2] },
-      { id: 'M', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] },
-      { id: 'N', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] },
-      { id: 'O', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] }
+      { id: 'A', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'B', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'C', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'D', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'E', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'F', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'G', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'H', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'I', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'J', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,15, 'a', 16,17,18,19] },
+      { id: 'K', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14,null, 'a', 15,16,17,18] },
+      { id: 'L', map: [null,null,1,2, 'a', 3,4,5,6,7,8,9,10,11,12,13, 'a', 14,15,16,17] },
+      { id: 'M', map: [null,null,1,2, 'a', 3,4,null,null,null,null,null,null,null,null,null, 'a', 5,6,7,8] },
+      { id: 'N', map: [null,null,1,2, 'a', 3,4,null,null,null,null,null,null,null,null,null, 'a', null,null,null,null] },
+      { id: 'O', map: [null,null,1,2,   3, 4,5,null,null,null,null,null,null,null,null,null, 'a', null,null,null,null] }
     ]
   },
-  { 
-    name: '2층', 
+  {
+    name: '2층',
     rows: [
-      { id: 'P', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [] },
-      { id: 'Q', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [] },
-      { id: 'R', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] },
-      { id: 'S', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] },
-      { id: 'T', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] }
+      { id: 'P', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14, 'a', 15,16] },
+      { id: 'Q', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14, 'a', 15,16] },
+      { id: 'R', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14] },
+      { id: 'S', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14] },
+      { id: 'T', map: [1,2,3,4, 'a', 5,6,7,8,9,10,11,12,13,14] }
     ]
   }
 ];
@@ -567,7 +569,6 @@ function loadState() {
     state.wallet = parsed.wallet || [];
     state.walletOrder = parsed.walletOrder || {}; 
     
-    // 로컬 스토리지에 스케줄 데이터가 비어있을 수 있으므로 기본값 합치기
     if (parsed.schedule && parsed.schedule.length > 0) {
         state.schedule = parsed.schedule;
     }
@@ -933,21 +934,58 @@ function renderMiniMap(selZone, selRow, selNum) {
   let hmHtml = '<div class="mini-hm-container">';
   
   THEATER_ZONES.forEach(z => {
-    hmHtml += `<div class="mini-zone-block"><div style="font-size:11px; font-weight:700; color:var(--txt2); margin-bottom:8px;">${z.name}</div>`;
+    hmHtml += `<div style="display:flex; flex-direction:column; align-items:center; margin-bottom:10px;">`;
+    hmHtml += `<div style="font-size:11px; font-weight:700; color:var(--txt2); margin-bottom:8px;">${z.name}</div>`;
+    hmHtml += `<div style="display:flex; gap:10px; align-items:flex-start;">`;
+    
+    // 좌측 V구역 (1층만 존재)
+    if (z.left) {
+      hmHtml += `<div style="display:flex; flex-direction:column; gap:2px; align-items:center;">`;
+      hmHtml += `<div class="mini-row-label" style="margin:0 0 4px 0;">${z.left.id}</div>`;
+      z.left.map.forEach(col => {
+        if (col === null) {
+          hmHtml += `<div class="mini-seat-cell hidden"></div>`;
+        } else {
+          const isSel = (z.name === selZone && z.left.id === selRow && col === selNum);
+          hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
+        }
+      });
+      hmHtml += `</div>`;
+    }
+
+    // 중앙 본 구역
+    hmHtml += `<div class="zone-col" style="gap:2px;">`;
     z.rows.forEach(rowInfo => {
       hmHtml += `<div class="mini-seat-row"><div class="mini-row-label">${rowInfo.id}</div>`;
-      rowInfo.seats.forEach(col => {
-        const isHidden = rowInfo.hidden.includes(col);
-        const isSel = (z.name === selZone && rowInfo.id === selRow && col === selNum);
-        if (isHidden) {
-            hmHtml += `<div class="mini-seat-cell hidden"></div>`;
+      rowInfo.map.forEach(col => {
+        if (col === 'a') {
+           hmHtml += `<div class="mini-seat-aisle"></div>`;
+        } else if (col === null) {
+           hmHtml += `<div class="mini-seat-cell hidden"></div>`;
         } else {
-            hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
+           const isSel = (z.name === selZone && rowInfo.id === selRow && col === selNum);
+           hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
         }
       });
       hmHtml += `</div>`;
     });
     hmHtml += `</div>`;
+
+    // 우측 W구역 (1층만 존재)
+    if (z.right) {
+      hmHtml += `<div style="display:flex; flex-direction:column; gap:2px; align-items:center;">`;
+      hmHtml += `<div class="mini-row-label" style="margin:0 0 4px 0;">${z.right.id}</div>`;
+      z.right.map.forEach(col => {
+        if (col === null) {
+          hmHtml += `<div class="mini-seat-cell hidden"></div>`;
+        } else {
+          const isSel = (z.name === selZone && z.right.id === selRow && col === selNum);
+          hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
+        }
+      });
+      hmHtml += `</div>`;
+    }
+    hmHtml += `</div></div>`;
   });
   
   hmHtml += '</div>';
@@ -1557,7 +1595,7 @@ function addBoard() {
 }
 
 // ============================================================
-// 7. STATS 
+// 7. STATS (히트맵 렌더링 포함)
 // ============================================================
 function renderStats() {
   let validRecords = [];
@@ -1629,22 +1667,60 @@ function renderStats() {
 
   let hmHtml = '';
   THEATER_ZONES.forEach(z => { 
-    hmHtml += `<div class="zone-col"><div style="font-size:11px; font-weight:700; color:var(--txt); margin-bottom:4px; text-shadow:0 0 3px rgba(255,255,255,0.3);">${z.name}</div>`;
+    hmHtml += `<div style="display:flex; flex-direction:column; align-items:center; margin-bottom:10px; width:100%;">`;
+    hmHtml += `<div style="font-size:11px; font-weight:700; color:var(--txt); margin-bottom:12px; text-shadow:0 0 3px rgba(255,255,255,0.3);">${z.name}</div>`;
+    
+    // 1층 레이아웃 (좌측V + 중앙본체 + 우측W)
+    hmHtml += `<div style="display:flex; gap:16px; align-items:flex-start;">`;
+    
+    if (z.left) {
+      hmHtml += `<div style="display:flex; flex-direction:column; gap:3px; align-items:center;">`;
+      hmHtml += `<div class="row-label" style="margin:0 0 4px 0;">${z.left.id}</div>`;
+      z.left.map.forEach(col => {
+        if (col === null) {
+          hmHtml += `<div class="seat-cell hidden"></div>`;
+        } else {
+          const k = `${z.name}-${z.left.id}-${col}`;
+          const cnt = seatMap[k] || 0;
+          hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${z.left.id}열 ${col}번: ${cnt}회"></div>`;
+        }
+      });
+      hmHtml += `</div>`;
+    }
+    
+    hmHtml += `<div class="zone-col">`;
     z.rows.forEach(rowInfo => {
       hmHtml += `<div class="seat-row"><div class="row-label">${rowInfo.id}</div>`;
-      rowInfo.seats.forEach(col => {
-        const isHidden = rowInfo.hidden.includes(col);
-        const k = `${z.name}-${rowInfo.id}-${col}`;
-        const cnt = seatMap[k] || 0;
-        if (isHidden) {
-             hmHtml += `<div class="seat-cell hidden"></div>`;
+      rowInfo.map.forEach(col => {
+        if (col === 'a') {
+           hmHtml += `<div class="seat-aisle"></div>`;
+        } else if (col === null) {
+           hmHtml += `<div class="seat-cell hidden"></div>`;
         } else {
-             hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${rowInfo.id}열 ${col}번: ${cnt}회"></div>`;
+           const k = `${z.name}-${rowInfo.id}-${col}`;
+           const cnt = seatMap[k] || 0;
+           hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${rowInfo.id}열 ${col}번: ${cnt}회"></div>`;
         }
       });
       hmHtml += `</div>`;
     });
-    hmHtml += `</div>`; 
+    hmHtml += `</div>`;
+
+    if (z.right) {
+      hmHtml += `<div style="display:flex; flex-direction:column; gap:3px; align-items:center;">`;
+      hmHtml += `<div class="row-label" style="margin:0 0 4px 0;">${z.right.id}</div>`;
+      z.right.map.forEach(col => {
+        if (col === null) {
+          hmHtml += `<div class="seat-cell hidden"></div>`;
+        } else {
+          const k = `${z.name}-${z.right.id}-${col}`;
+          const cnt = seatMap[k] || 0;
+          hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${z.right.id}열 ${col}번: ${cnt}회"></div>`;
+        }
+      });
+      hmHtml += `</div>`;
+    }
+    hmHtml += `</div></div>`; 
   });
   
   document.getElementById('heatmap-container').innerHTML = hmHtml;
@@ -1754,9 +1830,6 @@ window.onload = () => {
   initWalletForm();
   loadState();
   
-  // JSON 파일 로드 생략 (직접 내장)
-  // fetchSchedule(false);
-  // fetchEvents(false);
   renderCalendar();
   
   switchTab('record', document.querySelector('.tab-btn')); 
