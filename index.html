@@ -17,21 +17,13 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap');
 
 :root {
-  /* 우주 배경: 더 깊고 대비감 있는 다크 네이비 */
   --bg:#080c13; --bg2:#111926; --bg3:#1d2a3f; --bg4:#2b3d5c;
   --brd:#253550; --brd2:#374f76;
-  
-  /* 달빛(White/Silver) 톤 강조: 텍스트를 더 하얗고 밝게 */
   --txt:#ffffff; --txt2:#e2e8f0; --txt3:#aebcd1; --txt4:#7b8ba6; --dim:#4b5b75;
-  
-  /* 밝은 샴페인 골드 (포스터 텍스트 색상) */
   --red:#fceea7; --red2:#e6d37a; --red3:#fff8ce; --red4:#fffdf0;
-  
-  /* 보조 컬러: 은하수빛 실버/블루 */
   --grn:#cbd5e1; --grn2:#f8fafc;
   --blu:#93c5fd; --blu2:#e0f2fe;
   
-  /* 좌석 히트맵: 달빛에서 금빛으로 점진적 변화 */
   --seat1:#94a3b8; 
   --seat2:#cbd5e1; 
   --seat3:#fde047; 
@@ -176,11 +168,10 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 .legend-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txt); font-weight:600; }
 .legend-dot { width:12px; height:12px; border-radius:2px; }
 
-/* CD ANIMATION & STYLE - 밝은 달빛 테마로 대폭 수정 */
+/* CD ANIMATION & STYLE */
 @keyframes cd-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .cd-record {
   width: 65px; height: 65px; border-radius: 50%;
-  /* 새하얀 달 표면을 연상시키는 밝은 은백색 그라데이션 */
   background: conic-gradient(#ffffff 0deg, #e2e8f0 45deg, #ffffff 90deg, #e2e8f0 135deg, #ffffff 180deg, #e2e8f0 225deg, #ffffff 270deg, #e2e8f0 315deg, #ffffff 360deg);
   position: relative; box-shadow: 0 4px 15px rgba(255,255,255,0.2), inset 0 0 5px rgba(255,255,255,0.8);
   animation: cd-spin 4s linear infinite; flex-shrink: 0; border: 1px solid #f1f5f9;
@@ -195,7 +186,6 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 
 <div id="app">
   <div class="page active" id="page-record">
-    <!-- 텍스트 대신 첨부하신 로고 이미지 반영 -->
     <div style="text-align:center; margin-bottom:16px; position:relative;">
       <img src="sidereus_logo.png" alt="시데레우스" style="height:55px; object-fit:contain; filter: drop-shadow(0 0 8px rgba(252,238,167,0.4));">
     </div>
@@ -483,7 +473,9 @@ const CONFIG = {
     { id: "cast3", label: "마리아", actors: ["이상아", "유낙원"] }
   ],
   
-  EVENTS: [],
+  EVENTS: [
+    { name: "프리뷰", startDate: "2026-06-04", endDate: "2026-06-10", color: "#4CAF50" }
+  ],
   
   DISCOUNTS: [
     { label: "없음", value: "" },
@@ -503,11 +495,40 @@ const CONFIG = {
 };
 
 // ============================================================
-// 플러스씨어터 전용 좌석 구조 데이터
+// 플러스씨어터 좌석 데이터 구조
+// 첨부된 코드와 이미지를 기반으로 각 열별로 정확한 렌더링을 위해 세분화
 // ============================================================
 const THEATER_ZONES = [
-  { name: '1층', rows: ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'], maxCols: 19 },
-  { name: '2층', rows: ['P','Q','R','S','T'], maxCols: 16 }
+  { 
+    name: '1층', 
+    rows: [
+      { id: 'A', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 16,17,18,19] },
+      { id: 'B', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 16,17,18,19] },
+      { id: 'C', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'D', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'E', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'F', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'G', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'H', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'I', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'J', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'K', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [] },
+      { id: 'L', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2] },
+      { id: 'M', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] },
+      { id: 'N', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] },
+      { id: 'O', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19], hidden: [1,2,3,4, 9,10,11,12,13,14,15, 16,17,18,19] }
+    ]
+  },
+  { 
+    name: '2층', 
+    rows: [
+      { id: 'P', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [] },
+      { id: 'Q', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [] },
+      { id: 'R', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] },
+      { id: 'S', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] },
+      { id: 'T', seats: [1,2,3,4, 5,6,7,8,9,10,11,12,13,14,15,16], hidden: [15,16] }
+    ]
+  }
 ];
 
 // ============================================================
@@ -518,7 +539,16 @@ let state = {
   boards: [{ id: "b1", name: "1", initial: 0, active: true }],
   wallet: [], 
   walletOrder: {}, 
-  schedule: [],
+  schedule: [
+    { "date": "2026-06-04", "time": "20:00", "galileo": "박민성", "kepler": "기세중", "maria": "유낙원" },
+    { "date": "2026-06-05", "time": "20:00", "galileo": "안재영", "kepler": "안지환", "maria": "이상아" },
+    { "date": "2026-06-06", "time": "15:00", "galileo": "김지철", "kepler": "강병훈", "maria": "유낙원" },
+    { "date": "2026-06-06", "time": "18:30", "galileo": "안재영", "kepler": "기세중", "maria": "유낙원" },
+    { "date": "2026-06-07", "time": "15:00", "galileo": "박민성", "kepler": "안지환", "maria": "이상아" },
+    { "date": "2026-06-07", "time": "18:30", "galileo": "박민성", "kepler": "강병훈", "maria": "이상아" },
+    { "date": "2026-06-09", "time": "20:00", "galileo": "김지철", "kepler": "안지환", "maria": "유낙원" },
+    { "date": "2026-06-10", "time": "20:00", "galileo": "안재영", "kepler": "강병훈", "maria": "이상아" }
+  ],
   events: []
 };
 
@@ -534,8 +564,11 @@ function loadState() {
     state.boards = parsed.boards || [{ id: "b1", name: "1", initial: 0, active: true }];
     state.wallet = parsed.wallet || [];
     state.walletOrder = parsed.walletOrder || {}; 
-    state.schedule = parsed.schedule || [];
-    state.events = parsed.events || [];
+    
+    // 로컬 스토리지에 스케줄 데이터가 비어있을 수 있으므로 기본값 합치기
+    if (parsed.schedule && parsed.schedule.length > 0) {
+        state.schedule = parsed.schedule;
+    }
   }
 }
 
@@ -899,12 +932,17 @@ function renderMiniMap(selZone, selRow, selNum) {
   
   THEATER_ZONES.forEach(z => {
     hmHtml += `<div class="mini-zone-block"><div style="font-size:11px; font-weight:700; color:var(--txt2); margin-bottom:8px;">${z.name}</div>`;
-    z.rows.forEach(rowLetter => {
-      hmHtml += `<div class="mini-seat-row"><div class="mini-row-label">${rowLetter}</div>`;
-      for (let col = 1; col <= z.maxCols; col++) {
-        const isSel = (z.name === selZone && rowLetter === selRow && col === selNum);
-        hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
-      }
+    z.rows.forEach(rowInfo => {
+      hmHtml += `<div class="mini-seat-row"><div class="mini-row-label">${rowInfo.id}</div>`;
+      rowInfo.seats.forEach(col => {
+        const isHidden = rowInfo.hidden.includes(col);
+        const isSel = (z.name === selZone && rowInfo.id === selRow && col === selNum);
+        if (isHidden) {
+            hmHtml += `<div class="mini-seat-cell hidden"></div>`;
+        } else {
+            hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
+        }
+      });
       hmHtml += `</div>`;
     });
     hmHtml += `</div>`;
@@ -971,7 +1009,8 @@ function renderCalendar() {
 
   const evts = state.events && state.events.length ? state.events : [];
   const segments = [];
-  evts.forEach(ev => {
+  
+  CONFIG.EVENTS.forEach(ev => {
     if (ev.endDate < monthStart || ev.startDate > monthEnd) return;
     const clampedStart = ev.startDate < monthStart ? monthStart : ev.startDate;
     const clampedEnd   = ev.endDate   > monthEnd   ? monthEnd   : ev.endDate;
@@ -1589,13 +1628,18 @@ function renderStats() {
   let hmHtml = '';
   THEATER_ZONES.forEach(z => { 
     hmHtml += `<div class="zone-col"><div style="font-size:11px; font-weight:700; color:var(--txt); margin-bottom:4px; text-shadow:0 0 3px rgba(255,255,255,0.3);">${z.name}</div>`;
-    z.rows.forEach(rowLetter => {
-      hmHtml += `<div class="seat-row"><div class="row-label">${rowLetter}</div>`;
-      for (let col = 1; col <= z.maxCols; col++) {
-        const k = `${z.name}-${rowLetter}-${col}`;
+    z.rows.forEach(rowInfo => {
+      hmHtml += `<div class="seat-row"><div class="row-label">${rowInfo.id}</div>`;
+      rowInfo.seats.forEach(col => {
+        const isHidden = rowInfo.hidden.includes(col);
+        const k = `${z.name}-${rowInfo.id}-${col}`;
         const cnt = seatMap[k] || 0;
-        hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${rowLetter}열 ${col}번: ${cnt}회"></div>`;
-      }
+        if (isHidden) {
+             hmHtml += `<div class="seat-cell hidden"></div>`;
+        } else {
+             hmHtml += `<div class="seat-cell ${getHeatClass(cnt)}" title="${z.name} ${rowInfo.id}열 ${col}번: ${cnt}회"></div>`;
+        }
+      });
       hmHtml += `</div>`;
     });
     hmHtml += `</div>`; 
@@ -1707,8 +1751,12 @@ window.onload = () => {
   initRecordForm();
   initWalletForm();
   loadState();
-  fetchSchedule(false);
-  fetchEvents(false);
+  
+  // JSON 파일 로드 생략 (직접 내장)
+  // fetchSchedule(false);
+  // fetchEvents(false);
+  renderCalendar();
+  
   switchTab('record', document.querySelector('.tab-btn')); 
 };
 
