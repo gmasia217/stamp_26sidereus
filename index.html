@@ -8,23 +8,30 @@
 <title>시데레우스 관극 기록</title>
 
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/jpeg" href="sidereus_icon.jpg">
+<link rel="icon" type="image/png" href="sidereus_icon.jpg">
 <link rel="apple-touch-icon" href="sidereus_icon.jpg">
-<meta name="theme-color" content="#0b0f19">
+<meta name="theme-color" content="#080c13">
 
 <style>
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap');
 
 :root {
-  --bg:#0b0f19; --bg2:#131a2a; --bg3:#1c263c; --bg4:#283755;
-  --brd:#283755; --brd2:#3a4d70;
-  --txt:#f8fafc; --txt2:#cbd5e1; --txt3:#94a3b8; --txt4:#64748b; --dim:#475569;
+  /* 우주 배경: 더 깊고 대비감 있는 다크 네이비 */
+  --bg:#080c13; --bg2:#111926; --bg3:#1d2a3f; --bg4:#2b3d5c;
+  --brd:#253550; --brd2:#374f76;
   
-  --red:#d4af37; --red2:#b5952f; --red3:#f3d573; --red4:#ffeaa7;
-  --grn:#818cf8; --grn2:#a5b4fc;
-  --blu:#5c8aff; --blu2:#8fb1ff;
+  /* 달빛(White/Silver) 톤 강조: 텍스트를 더 하얗고 밝게 */
+  --txt:#ffffff; --txt2:#e2e8f0; --txt3:#aebcd1; --txt4:#7b8ba6; --dim:#4b5b75;
   
+  /* 밝은 샴페인 골드 (포스터 텍스트 색상) */
+  --red:#fceea7; --red2:#e6d37a; --red3:#fff8ce; --red4:#fffdf0;
+  
+  /* 보조 컬러: 은하수빛 실버/블루 */
+  --grn:#cbd5e1; --grn2:#f8fafc;
+  --blu:#93c5fd; --blu2:#e0f2fe;
+  
+  /* 좌석 히트맵: 달빛에서 금빛으로 점진적 변화 */
   --seat1:#94a3b8; 
   --seat2:#cbd5e1; 
   --seat3:#fde047; 
@@ -42,38 +49,39 @@ body { background:var(--bg); color:var(--txt); font-family:'Pretendard', sans-se
 .tab-bar { position:fixed; bottom:0; left:0; width:100%; height:calc(var(--tab-h) + env(safe-area-inset-bottom, 0px)); padding-bottom:env(safe-area-inset-bottom, 0px); background:var(--bg2); border-top:1px solid var(--brd); display:flex; z-index:100; }
 .tab-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:none; border:none; cursor:pointer; color:var(--txt4); font-size:10px; transition:color 0.2s; }
 .tab-btn.active { color:var(--red); }
-.tab-btn .icon { font-size:20px; }
+.tab-btn .icon { font-size:20px; filter: grayscale(100%) brightness(150%); }
+.tab-btn.active .icon { filter: none; }
 
 /* PAGES & COMMON */
 .page { display:none; padding:16px; animation: fadeIn 0.2s ease; }
 .page.active { display:block; }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-.page-title { font-family:'IBM Plex Sans KR', sans-serif; font-size:22px; font-weight:700; color:var(--txt); margin-bottom:16px; text-shadow:0 0 12px rgba(212,175,55,.3); }
-.card { background:var(--bg2); border:1px solid var(--brd); border-radius:12px; padding:16px; margin-bottom:16px; }
-.card-title { font-size:13px; color:var(--txt2); margin-bottom:12px; font-weight:600; letter-spacing:0.05em; }
+.page-title { font-family:'IBM Plex Sans KR', sans-serif; font-size:22px; font-weight:700; color:var(--txt); margin-bottom:16px; text-shadow:0 0 12px rgba(252,238,167,.4); }
+.card { background:var(--bg2); border:1px solid var(--brd); border-radius:12px; padding:16px; margin-bottom:16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.card-title { font-size:13px; color:var(--txt); margin-bottom:12px; font-weight:700; letter-spacing:0.05em; }
 
 /* BUTTONS */
 .btn { background:transparent; border:1px solid var(--brd2); color:var(--txt2); padding:8px 14px; cursor:pointer; font-family:inherit; font-size:13px; border-radius:6px; transition:all 0.2s; }
 .btn:active { border-color:var(--red3); color:var(--red3); }
-.btn.prim { background:var(--red); border-color:var(--red); color:#000; font-weight:700; }
+.btn.prim { background:var(--red); border-color:var(--red); color:#111; font-weight:700; box-shadow: 0 0 10px rgba(252,238,167,0.2); }
 .btn.prim:active { background:var(--red2); border-color:var(--red2); }
 .btn.sm { padding:4px 10px; font-size:11px; }
 .btn.ghost { background:transparent; border-color:transparent; color:var(--txt4); }
-.btn.grn { background:var(--grn); border-color:var(--grn); color:#000; font-weight:700; }
+.btn.grn { background:var(--grn); border-color:var(--grn); color:#111; font-weight:700; }
 .flex-between { display:flex; justify-content:space-between; align-items:center; }
 
 /* BOX SELECTORS */
 .seg-group { display:flex; gap:8px; }
 .seg-item { flex:1; text-align:center; background:var(--bg3); border:1px solid var(--brd2); border-radius:6px; cursor:pointer; color:var(--txt3); padding:10px 0; transition:0.2s; font-size:13px; font-weight:600; }
 .seg-item input { display:none; }
-.seg-item.active.red { background:rgba(212,175,55,0.1); border-color:var(--red); color:var(--red); }
-.seg-item.active.grn { background:rgba(129,140,248,0.1); border-color:var(--grn); color:var(--grn); }
+.seg-item.active.red { background:rgba(252,238,167,0.15); border-color:var(--red); color:var(--red); text-shadow: 0 0 5px rgba(252,238,167,0.5); }
+.seg-item.active.grn { background:rgba(203,213,225,0.15); border-color:var(--grn); color:var(--txt); }
 
 /* TABLE */
 .twrap { overflow-x:auto; margin:0 -16px; padding:0 16px; -webkit-overflow-scrolling: touch; }
 table.record-tb { width:max-content; min-width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--brd); border-left:0; border-top:0; }
 .record-tb th, .record-tb td { padding:8px 6px; border-bottom:1px solid var(--brd); border-right:1px solid var(--brd); text-align:center; white-space:nowrap; font-size:12px; vertical-align:middle; transition: opacity 0.2s; }
-.record-tb thead th { border-top:1px solid var(--brd); background:var(--bg4); position:sticky; top:0; z-index:21; font-size:10px; color:var(--txt3); }
+.record-tb thead th { border-top:1px solid var(--brd); background:var(--bg4); position:sticky; top:0; z-index:21; font-size:10px; color:var(--txt); font-weight:600; letter-spacing:0.02em; }
 .hover-row:hover { background-color: var(--bg3); }
 
 .st-date { position:sticky; left:0; z-index:20; background:var(--bg2); border-left:1px solid var(--brd); min-width:55px; max-width:55px; }
@@ -83,14 +91,14 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 
 /* FORMS & MODALS */
 .finput, .fselect { width:100%; background:var(--bg3); border:1px solid var(--brd2); color:var(--txt); padding:10px 12px; font-family:inherit; font-size:13px; border-radius:6px; outline:none; color-scheme:dark; text-transform: uppercase; }
-.finput:focus, .fselect:focus { border-color:var(--red); }
+.finput:focus, .fselect:focus { border-color:var(--red); box-shadow: 0 0 5px rgba(252,238,167,0.3); }
 .fg { margin-bottom:12px; }
-.flbl { display:block; font-size:11px; color:var(--txt3); margin-bottom:5px; }
+.flbl { display:block; font-size:11px; color:var(--txt3); margin-bottom:5px; font-weight:600; }
 
 /* OVERLAY & MODAL ANIMATION */
-.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:200; justify-content:center; align-items:flex-end; }
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:200; justify-content:center; align-items:flex-end; backdrop-filter: blur(2px); }
 .overlay.show { display:flex; }
-.modal { background:var(--bg2); border-top:2px solid var(--red); width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:20px; border-radius:16px 16px 0 0; animation:slideUp 0.3s ease; }
+.modal { background:var(--bg2); border-top:2px solid var(--red); width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:20px; border-radius:16px 16px 0 0; animation:slideUp 0.3s ease; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
 @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
 
 .overlay.center { align-items:center; padding:20px; }
@@ -98,10 +106,10 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 @keyframes popIn { from { transform:scale(0.95); opacity:0; } to { transform:scale(1); opacity:1; } }
 
 .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.detail-date-title { font-size: 18px; font-weight: 700; color: var(--txt); font-family: 'IBM Plex Sans KR', sans-serif; }
+.detail-date-title { font-size: 18px; font-weight: 700; color: var(--txt); font-family: 'IBM Plex Sans KR', sans-serif; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
 .detail-info-row { font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; }
-.dt-label { color: var(--txt3); font-weight: 600; margin-right: 12px; width: 40px; }
-.dt-value { color: var(--txt); font-weight: 500; }
+.dt-label { color: var(--red); font-weight: 600; margin-right: 12px; width: 40px; text-shadow: 0 0 5px rgba(252,238,167,0.3); }
+.dt-value { color: var(--txt); font-weight: 600; }
 
 /* MINI SEAT GRID */
 .mini-hm-container { display: flex; flex-direction:column; gap: 16px; align-items: center; margin: 16px 0; border: 1px solid var(--brd2); padding: 16px; border-radius: 8px; background: var(--bg); overflow-x:auto;}
@@ -114,40 +122,40 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 
 /* CALENDAR & EVENTS */
 .cal-filter-group { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.cal-filter-label { font-size:12px; color:var(--txt3); width:50px; font-weight:600; }
-.cal-filter-btn { background:var(--bg3); border:1px solid var(--brd2); color:var(--txt4); padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; transition:all 0.2s; }
-.cal-filter-btn.active { background:var(--bg4); border-color:var(--txt2); color:var(--txt); font-weight:600; }
+.cal-filter-label { font-size:12px; color:var(--txt2); width:50px; font-weight:700; }
+.cal-filter-btn { background:var(--bg3); border:1px solid var(--brd2); color:var(--txt3); padding:4px 10px; border-radius:4px; font-size:12px; cursor:pointer; transition:all 0.2s; }
+.cal-filter-btn.active { background:var(--txt); border-color:var(--txt); color:#000; font-weight:700; box-shadow: 0 0 8px rgba(255,255,255,0.4); }
 
 .cal-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
 .cal-grid { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:1px; position:relative; background:var(--brd); border:1px solid var(--brd); border-radius:4px; overflow:hidden;}
-.cal-dow { text-align:center; font-size:11px; font-weight:700; color:var(--txt3); padding:8px 0; background:var(--bg2); }
+.cal-dow { text-align:center; font-size:11px; font-weight:700; color:var(--txt2); padding:8px 0; background:var(--bg2); }
 .cal-day { min-height:100px; min-width:0; background:var(--bg); padding:6px 4px; cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:flex-start; transition:background 0.15s; }
-.cal-day.today { background:rgba(212,175,55,.05); border:1px solid var(--red); }
+.cal-day.today { background:rgba(252,238,167,.08); border:1px solid var(--red); }
 .cal-day.empty { background:var(--bg2); cursor:default; }
-.cal-day-num { font-size:12px; font-weight:700; color:var(--txt3); margin-bottom:4px; padding-left:2px; }
-.cal-day.sun .cal-day-num { color:#ff6b6b; }
-.cal-day.sat .cal-day-num { color:#818cf8; }
+.cal-day-num { font-size:12px; font-weight:700; color:var(--txt); margin-bottom:4px; padding-left:2px; }
+.cal-day.sun .cal-day-num { color:#ff8787; }
+.cal-day.sat .cal-day-num { color:#93c5fd; }
 
 .cs-chip { width:100%; text-align:left; padding:4px; border-radius:4px; margin-top:4px; background:transparent; border:1px solid transparent; }
-.cs-time { font-size:11px; font-weight:700; color:var(--txt); }
+.cs-time { font-size:11px; font-weight:700; color:var(--txt); text-shadow: 0 0 2px rgba(255,255,255,0.2); }
 .cs-time::before { content: '• '; }
-.cs-cast { font-size:10px; color:var(--txt3); margin-top:2px; padding-left:0; word-break:break-all; white-space:normal; line-height:1.2; }
-.cs-chip.booked { background:rgba(212,175,55,0.1); border-color:var(--red); }
-.cs-chip.booked .cs-time, .cs-chip.booked .cs-cast { color:var(--red); }
-.cs-chip.unseated { background:rgba(100, 116, 139, 0.2); border-color:var(--txt4); }
-.cs-chip.unseated .cs-time, .cs-chip.unseated .cs-cast { color:var(--txt4); }
+.cs-cast { font-size:10px; color:var(--txt2); margin-top:2px; padding-left:0; word-break:break-all; white-space:normal; line-height:1.2; }
+.cs-chip.booked { background:rgba(252,238,167,0.15); border-color:var(--red); }
+.cs-chip.booked .cs-time, .cs-chip.booked .cs-cast { color:var(--red); text-shadow: 0 0 3px rgba(252,238,167,0.3); }
+.cs-chip.unseated { background:rgba(123, 139, 166, 0.25); border-color:var(--txt3); }
+.cs-chip.unseated .cs-time, .cs-chip.unseated .cs-cast { color:var(--txt2); }
 
 /* WALLET & STAMPS */
 .wallet-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
 .wcard { width:calc(50% - 4px); flex-grow:1; background:var(--bg3); border:1px solid var(--brd2); border-radius:6px; text-align:center; display:flex; flex-direction:column; overflow:hidden; }
-.wcard-header { background:var(--bg4); padding:8px 4px; font-size:11px; color:var(--txt2); font-weight:600; border-bottom:1px solid var(--brd2); }
+.wcard-header { background:var(--bg4); padding:8px 4px; font-size:11px; color:var(--txt); font-weight:700; border-bottom:1px solid var(--brd2); }
 .wcard-body { display:flex; }
 .wcard-half { flex:1; padding:12px 0; }
 .wcard-half:first-child { border-right:1px solid var(--brd2); }
-.wcard-label-curr { font-size:10px; color:var(--grn); font-weight:700; margin-bottom:6px; }
-.wcard-label-final { font-size:10px; color:var(--txt3); font-weight:600; margin-bottom:6px; }
+.wcard-label-curr { font-size:10px; color:var(--red); font-weight:700; margin-bottom:6px; }
+.wcard-label-final { font-size:10px; color:var(--txt2); font-weight:600; margin-bottom:6px; }
 .wcard-sub { font-size:10px; color:var(--txt4); margin-top:6px; transform:scale(0.85); transform-origin:center; white-space:nowrap; }
-.wcard-val { font-size:22px; font-weight:700; font-family:'IBM Plex Sans KR'; }
+.wcard-val { font-size:22px; font-weight:700; font-family:'IBM Plex Sans KR'; color:var(--txt); }
 
 .collapsible-content { display:none; margin-top:12px; border-top:1px dashed var(--brd2); padding-top:12px; }
 .collapsible-content.open { display:block; }
@@ -156,29 +164,30 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 .heatmap-wrap { display:flex; flex-direction:column; gap:20px; align-items:center; overflow-x:auto; padding-bottom:10px; }
 .zone-col { display:flex; flex-direction:column; gap:3px; align-items:center; }
 .seat-row { display:flex; gap:3px; align-items:center; }
-.row-label { font-size:9px; width:12px; text-align:right; color:var(--txt4); margin-right:4px; font-weight:600; }
+.row-label { font-size:9px; width:12px; text-align:right; color:var(--txt3); margin-right:4px; font-weight:700; }
 .seat-cell { width:12px; height:12px; background:var(--bg4); border-radius:2px; border:1px solid transparent; flex-shrink:0; }
 .seat-cell.v1 { background:var(--seat1); border-color:var(--seat1); } 
 .seat-cell.v2 { background:var(--seat2); border-color:var(--seat2); }
 .seat-cell.v3 { background:var(--seat3); border-color:var(--seat3); } 
-.seat-cell.v4 { background:var(--seat4); border-color:var(--seat4); }
-.seat-cell.v5 { background:var(--seat5); border-color:var(--seat5); }
+.seat-cell.v4 { background:var(--seat4); border-color:var(--seat4); box-shadow:0 0 3px var(--seat4); }
+.seat-cell.v5 { background:var(--seat5); border-color:var(--seat5); box-shadow:0 0 5px var(--seat5); }
 .seat-cell.hidden { background:transparent; border-color:transparent; }
 .heatmap-legend { display:flex; gap:10px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
-.legend-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txt2); }
+.legend-item { display:flex; align-items:center; gap:4px; font-size:11px; color:var(--txt); font-weight:600; }
 .legend-dot { width:12px; height:12px; border-radius:2px; }
 
-/* CD ANIMATION & STYLE */
+/* CD ANIMATION & STYLE - 밝은 달빛 테마로 대폭 수정 */
 @keyframes cd-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .cd-record {
   width: 65px; height: 65px; border-radius: 50%;
-  background: conic-gradient(#1e293b 0deg, #334155 45deg, #1e293b 90deg, #334155 135deg, #1e293b 180deg, #334155 225deg, #1e293b 270deg, #334155 315deg, #1e293b 360deg);
-  position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 0 3px rgba(212,175,55,0.5);
-  animation: cd-spin 4s linear infinite; flex-shrink: 0;
+  /* 새하얀 달 표면을 연상시키는 밝은 은백색 그라데이션 */
+  background: conic-gradient(#ffffff 0deg, #e2e8f0 45deg, #ffffff 90deg, #e2e8f0 135deg, #ffffff 180deg, #e2e8f0 225deg, #ffffff 270deg, #e2e8f0 315deg, #ffffff 360deg);
+  position: relative; box-shadow: 0 4px 15px rgba(255,255,255,0.2), inset 0 0 5px rgba(255,255,255,0.8);
+  animation: cd-spin 4s linear infinite; flex-shrink: 0; border: 1px solid #f1f5f9;
 }
 .cd-record::after {
   content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 14px; height: 14px; background: #0b0f19; border-radius: 50%; border: 2px solid #d4af37; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+  width: 14px; height: 14px; background: #ffffff; border-radius: 50%; border: 3px solid #cbd5e1; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
 }
 </style>
 </head>
@@ -186,15 +195,14 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 
 <div id="app">
   <div class="page active" id="page-record">
+    <!-- 텍스트 대신 첨부하신 로고 이미지 반영 -->
     <div style="text-align:center; margin-bottom:16px; position:relative;">
-      <div style="font-family:'IBM Plex Sans KR', sans-serif; font-size:26px; font-weight:700; color:var(--red); text-shadow:0 0 15px rgba(212,175,55,0.4); letter-spacing:0.05em; line-height:55px; display:inline-block;">
-        시데레우스
-      </div>
+      <img src="sidereus_logo.png" alt="시데레우스" style="height:55px; object-fit:contain; filter: drop-shadow(0 0 8px rgba(252,238,167,0.4));">
     </div>
     
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <button class="btn sm ghost" id="btn-filter-exchange" onclick="toggleExchangeFilter()" style="padding:4px 8px; font-size:12px; color:var(--txt4);">👁️ 실관람만</button>
-      <button class="btn prim sm" onclick="openRecordModal()" style="padding:6px 12px; font-size:13px;">+ 회차 추가</button>
+      <button class="btn sm ghost" id="btn-filter-exchange" onclick="toggleExchangeFilter()" style="padding:4px 8px; font-size:12px; color:var(--txt3);">👁️ 실관람만</button>
+      <button class="btn prim sm" onclick="openRecordModal()" style="padding:6px 12px; font-size:13px; color:#000;">+ 회차 추가</button>
     </div>
     
     <div class="twrap">
@@ -211,7 +219,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="card" style="padding:16px 12px;">
       <div id="cal-filter-wrap"></div>
       <div style="margin-top:12px;">
-        <button class="btn sm" style="margin-right:4px;" onclick="applyCalFilter()">조회하기</button>
+        <button class="btn sm" style="margin-right:4px; color:var(--txt); border-color:var(--txt3);" onclick="applyCalFilter()">조회하기</button>
         <button class="btn sm ghost" onclick="resetCalFilter()">초기화</button>
       </div>
     </div>
@@ -219,7 +227,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="card" style="padding:12px;">
       <div class="cal-nav">
         <button class="btn sm" onclick="changeMonth(-1)">‹ 이전달</button>
-        <div id="cal-month-title" style="font-weight:700; font-size:18px;"></div>
+        <div id="cal-month-title" style="font-weight:700; font-size:18px; color:var(--txt); text-shadow:0 0 5px rgba(255,255,255,0.3);"></div>
         <button class="btn sm" onclick="changeMonth(1)">다음달 ›</button>
       </div>
       <div id="cal-grid-container"></div>
@@ -230,8 +238,8 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="page-title">할인권 및 도장판</div>
     
     <div class="card" style="padding:16px;">
-      <div style="font-weight:700; color:var(--red3); margin-bottom:8px; font-size:13px;">🎁 재관람 혜택</div>
-      <div style="font-size:12px; color:var(--txt2); line-height:1.6;">
+      <div style="font-weight:700; color:var(--red); margin-bottom:8px; font-size:13px; text-shadow:0 0 5px rgba(252,238,167,0.3);">🎁 재관람 혜택</div>
+      <div style="font-size:12px; color:var(--txt); line-height:1.6;">
         • 5회 관람 시 : 40% 할인권 2매, 현장예매 50% 할인권 1매
       </div>
     </div>
@@ -239,7 +247,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="card">
       <div class="flex-between" style="margin-bottom:12px;">
         <div class="card-title" style="margin:0;">지갑 현황</div>
-        <button class="btn grn sm" onclick="openWalletModal()">+ 추가/차감</button>
+        <button class="btn sm" style="background:var(--txt); color:#000; border:none; font-weight:700;" onclick="openWalletModal()">+ 추가/차감</button>
       </div>
       <div class="wallet-grid" id="wallet-cards"></div>
       
@@ -259,7 +267,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="card">
       <div class="flex-between" style="margin-bottom:12px;">
         <div class="card-title" style="margin:0;">도장판 현황</div>
-        <button class="btn sm" onclick="addBoard()">+ 도장판 추가</button>
+        <button class="btn sm" onclick="addBoard()" style="color:var(--txt); border-color:var(--txt3);">+ 도장판 추가</button>
       </div>
       <div id="board-status-container" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
     </div>
@@ -276,7 +284,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     
     <div class="card">
       <div class="card-title">좌석 히트맵</div>
-      <div style="font-size:11px; color:var(--txt4); font-weight:400; margin-top:-8px; margin-bottom:16px;">📍 플러스씨어터</div>
+      <div style="font-size:11px; color:var(--txt3); font-weight:400; margin-top:-8px; margin-bottom:16px;">📍 플러스씨어터</div>
       <div class="heatmap-wrap" id="heatmap-container" style="margin-top:10px;"></div>
       <div class="heatmap-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--bg4);"></div>0회</div>
@@ -295,11 +303,11 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
         <table class="record-tb" style="width:100%; border-left:1px solid var(--brd); border-top:1px solid var(--brd);">
           <thead>
             <tr>
-              <th style="color:var(--txt3);">날짜</th>
-              <th style="color:var(--txt3);">시간</th>
-              <th style="color:var(--txt3);">캐스트</th>
-              <th style="color:var(--txt3);">좌석</th>
-              <th style="color:var(--txt3);">이벤트</th>
+              <th style="color:var(--txt);">날짜</th>
+              <th style="color:var(--txt);">시간</th>
+              <th style="color:var(--txt);">캐스트</th>
+              <th style="color:var(--txt);">좌석</th>
+              <th style="color:var(--txt);">이벤트</th>
             </tr>
           </thead>
           <tbody id="stats-sessions-body"></tbody>
@@ -315,24 +323,24 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <div class="card-title">데이터 동기화</div>
       <div class="flex-between" style="margin-bottom:12px; border-bottom:1px solid var(--brd2); padding-bottom:16px;">
         <div>
-          <div style="font-size:13px; margin-bottom:8px;">스케줄 업데이트</div>
+          <div style="font-size:13px; margin-bottom:8px; font-weight:600;">스케줄 업데이트</div>
           <div id="set-sch-time" style="font-size:10px; color:var(--txt4);">확인 중...</div>
         </div>
-        <button class="btn sm" onclick="fetchSchedule(true)">새로고침</button>
+        <button class="btn sm" onclick="fetchSchedule(true)" style="color:var(--txt);">새로고침</button>
       </div>
       <div class="flex-between" style="padding-top:8px;">
         <div>
-          <div style="font-size:13px; margin-bottom:8px;">이벤트 업데이트</div>
+          <div style="font-size:13px; margin-bottom:8px; font-weight:600;">이벤트 업데이트</div>
           <div id="set-evt-time" style="font-size:10px; color:var(--txt4);">확인 중...</div>
         </div>
-        <button class="btn sm" onclick="fetchEvents(true)">새로고침</button>
+        <button class="btn sm" onclick="fetchEvents(true)" style="color:var(--txt);">새로고침</button>
       </div>
     </div>
     <div class="card">
       <div class="card-title">백업 및 복원</div>
       <div style="display:flex; gap:10px;">
-        <button class="btn" style="flex:1;" onclick="exportData()">JSON 백업</button>
-        <button class="btn" style="flex:1;" onclick="document.getElementById('import-file').click()">JSON 복원</button>
+        <button class="btn" style="flex:1; color:var(--txt);" onclick="exportData()">JSON 백업</button>
+        <button class="btn" style="flex:1; color:var(--txt);" onclick="document.getElementById('import-file').click()">JSON 복원</button>
         <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
       </div>
     </div>
@@ -375,7 +383,6 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <label class="flbl">좌석 정보 (층 / 열 / 번호)</label>
       <div style="display:flex; gap:10px;">
         <select id="rm-zone" class="fselect" style="flex:1;"><option value="">층 선택</option><option value="1층">1층</option><option value="2층">2층</option></select>
-        <!-- 플러스씨어터에 맞게 열은 텍스트(알파벳)로 입력 받도록 변경 -->
         <input type="text" id="rm-row" class="finput" style="flex:1; text-transform:uppercase;" placeholder="열 (A~T)">
         <input type="number" id="rm-num" class="finput" style="flex:1;" placeholder="번호" min="1">
       </div>
@@ -414,7 +421,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
   <div class="modal center" style="background:var(--bg2); padding:20px; border-radius:16px; border:1px solid var(--brd2);">
     <div class="detail-header">
       <div class="detail-date-title" id="dt-title"></div>
-      <button class="btn sm ghost" onclick="closeModal('modal-detail')" style="font-size:16px; padding:0 6px;">✕</button>
+      <button class="btn sm ghost" onclick="closeModal('modal-detail')" style="font-size:16px; padding:0 6px; color:var(--txt);">✕</button>
     </div>
     <div class="detail-info-row">
       <span class="dt-label">CAST</span>
@@ -428,8 +435,8 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div id="dt-minimap"></div>
     
     <div style="display:flex; gap:10px; margin-top:16px;">
-      <button class="btn" style="flex:1;" id="dt-btn-edit">수정</button>
-      <button class="btn" style="flex:1; background:var(--red3); color:#000; font-weight:700; border:none;" id="dt-btn-delete">삭제</button>
+      <button class="btn" style="flex:1; color:var(--txt);" id="dt-btn-edit">수정</button>
+      <button class="btn" style="flex:1; background:#ef4444; color:#fff; font-weight:700; border:none;" id="dt-btn-delete">삭제</button>
     </div>
   </div>
 </div>
@@ -457,7 +464,7 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
     <div class="fg"><label class="flbl">메모</label><input type="text" id="wm-memo" class="finput" style="text-transform:none;"></div>
     <div style="display:flex; gap:10px; margin-top:20px;">
       <button class="btn" style="flex:1;" onclick="closeModal('modal-wallet')">취소</button>
-      <button class="btn grn" style="flex:1;" onclick="saveWallet()">저장</button>
+      <button class="btn" style="flex:1; background:var(--txt); color:#000; font-weight:700;" onclick="saveWallet()">저장</button>
     </div>
   </div>
 </div>
@@ -470,18 +477,14 @@ const CONFIG = {
   SHOW_NAME: "시데레우스",
   STORAGE_KEY: "sidereus_tracker_v1",
   
-  // 캐스팅 배열 업데이트 완료
   ROLES: [
     { id: "cast1", label: "갈릴레오", actors: ["박민성", "안재영", "김지철"] },
     { id: "cast2", label: "케플러", actors: ["기세중", "정휘", "안지환", "강병훈"] },
     { id: "cast3", label: "마리아", actors: ["이상아", "유낙원"] }
   ],
   
-  EVENTS: [
-    // 이벤트 데이터는 별도 events.json 에서 불러오도록 처리됩니다.
-  ],
+  EVENTS: [],
   
-  // 아직 미정이므로 기본 권종 세팅 + 재관람 혜택 추가
   DISCOUNTS: [
     { label: "없음", value: "" },
     { label: "재관할", value: "재관할", useWallet: "re" },
@@ -496,7 +499,6 @@ const CONFIG = {
     { id: "d50_onsite", label: "현장 50% 할인권" }
   ],
 
-  // 5회 관람 혜택으로 변경
   STAMP_MILESTONES: [5]
 };
 
@@ -562,8 +564,8 @@ function toggleCollapsible(id) { document.getElementById(id).classList.toggle('o
 function toggleExchangeFilter() {
   hideExchange = !hideExchange;
   const btn = document.getElementById('btn-filter-exchange');
-  if (hideExchange) { btn.innerHTML = '👁️‍🗨️ 전체보기'; btn.style.color = 'var(--red3)'; } 
-  else { btn.innerHTML = '👁️ 실관람만'; btn.style.color = 'var(--txt4)'; }
+  if (hideExchange) { btn.innerHTML = '👁️‍🗨️ 전체보기'; btn.style.color = 'var(--red)'; } 
+  else { btn.innerHTML = '👁️ 실관람만'; btn.style.color = 'var(--txt3)'; }
   renderRecords();
 }
 
@@ -582,7 +584,7 @@ function renderRecords() {
     <th class="st-cast">캐스트</th>
     <th>할인</th>
     <th>좌석</th>`;
-  state.boards.forEach(b => { thHtml += `<th style="color:var(--txt3); font-size:10px;">${b.name}</th>`; });
+  state.boards.forEach(b => { thHtml += `<th style="color:var(--txt2); font-size:10px;">${b.name}</th>`; });
   thHtml += `<th>관리</th></tr>`;
   document.getElementById('record-thead').innerHTML = thHtml;
 
@@ -637,7 +639,7 @@ function renderRecords() {
         <div style="${dimCls}">${r.date.substring(5).replace('-','.')}</div>
       </td>
       <td class="st-time"><div style="${dimCls}">${r.time}</div></td>
-      <td class="st-cast" style="font-weight:600; color:var(--red3);" title="${castStr}"><div style="${dimCls}">${castStr}</div></td>
+      <td class="st-cast" style="font-weight:700; color:var(--red);" title="${castStr}"><div style="${dimCls}">${castStr}</div></td>
       <td style="font-size:10px;"><div>${dispDisc}</div></td>
       <td style="font-size:10px;"><div>${seatStr}</div></td>`;
     
@@ -645,7 +647,7 @@ function renderRecords() {
       const stamped = r.boards && r.boards[b.id] ? r.boards[b.id] : 0;
       if (stamped > 0) {
         const icon = r._isMilestone[b.id] ? '🎁' : '';
-        rowHtml += `<td style="color:var(--red); line-height:1.4; font-weight:700;"><div>${stamped}<br><span style="font-size:10px; color:var(--txt3); font-weight:400;">(${r._cum[b.id]}${icon})</span></div></td>`;
+        rowHtml += `<td style="color:var(--txt); line-height:1.4; font-weight:700;"><div>${stamped}<br><span style="font-size:10px; color:var(--txt3); font-weight:400;">(${r._cum[b.id]}${icon})</span></div></td>`;
       } else {
         rowHtml += `<td style="color:var(--txt4)"><div>-</div></td>`;
       }
@@ -654,8 +656,8 @@ function renderRecords() {
     rowHtml += `
       <td onclick="event.stopPropagation();">
         <div style="display:flex; gap:4px; justify-content:center;">
-          <button class="btn sm" onclick="editRecord('${r.id}')" style="padding:2px 4px;">✎</button>
-          <button class="btn sm" onclick="deleteRecord('${r.id}')" style="padding:2px 4px; color:var(--red3);">✕</button>
+          <button class="btn sm" onclick="editRecord('${r.id}')" style="padding:2px 4px; color:var(--txt);">✎</button>
+          <button class="btn sm" onclick="deleteRecord('${r.id}')" style="padding:2px 4px; color:#ef4444; border-color:#ef4444;">✕</button>
         </div>
       </td></tr>`;
     return rowHtml;
@@ -795,7 +797,7 @@ function saveRecord() {
     cast3: document.getElementById('rm-cast3') ? document.getElementById('rm-cast3').value : '',
     discount: document.getElementById('rm-disc').value,
     seatZone: document.getElementById('rm-zone').value,
-    seatRow: document.getElementById('rm-row').value.toUpperCase(), // 열 문자는 무조건 대문자로 변환
+    seatRow: document.getElementById('rm-row').value.toUpperCase(),
     seatNum: document.getElementById('rm-num').value,
     boards: boardsData,
     memo: document.getElementById('rm-memo').value
@@ -896,12 +898,11 @@ function renderMiniMap(selZone, selRow, selNum) {
   let hmHtml = '<div class="mini-hm-container">';
   
   THEATER_ZONES.forEach(z => {
-    hmHtml += `<div class="mini-zone-block"><div style="font-size:11px; font-weight:700; color:var(--txt3); margin-bottom:8px;">${z.name}</div>`;
+    hmHtml += `<div class="mini-zone-block"><div style="font-size:11px; font-weight:700; color:var(--txt2); margin-bottom:8px;">${z.name}</div>`;
     z.rows.forEach(rowLetter => {
       hmHtml += `<div class="mini-seat-row"><div class="mini-row-label">${rowLetter}</div>`;
       for (let col = 1; col <= z.maxCols; col++) {
         const isSel = (z.name === selZone && rowLetter === selRow && col === selNum);
-        // 단순히 자리만 렌더링 (플러스씨어터 실제 비율 대략 묘사 위함)
         hmHtml += `<div class="mini-seat-cell ${isSel ? 'highlight' : ''}"></div>`;
       }
       hmHtml += `</div>`;
@@ -1075,8 +1076,8 @@ function renderCalendar() {
         wSegs.filter(s => s.row === row).forEach(s => {
           const leftPct  = (s.startCol / 7 * 100).toFixed(2);
           const widthPct = ((s.endCol - s.startCol + 1) / 7 * 100).toFixed(2);
-          html += `<div style="position:absolute; left:${leftPct}%; width:calc(${widthPct}% - 2px); height:14px; background:${s.color}; border-radius:2px; display:flex; align-items:center; padding:0 4px; overflow:hidden;">
-            <span style="font-size:9px; font-weight:700; color:#fff; white-space:nowrap;">${s.name}</span>
+          html += `<div style="position:absolute; left:${leftPct}%; width:calc(${widthPct}% - 2px); height:14px; background:${s.color}; border-radius:2px; display:flex; align-items:center; padding:0 4px; overflow:hidden; box-shadow: 0 0 5px rgba(255,255,255,0.2);">
+            <span style="font-size:9px; font-weight:700; color:#111; white-space:nowrap;">${s.name}</span>
           </div>`;
         });
         html += `</div>`;
@@ -1131,7 +1132,6 @@ function calculateWalletBalances() {
       Object.keys(r.boards).forEach(bid => {
         let before = boardCum[bid] || 0;
         boardCum[bid] = before + r.boards[bid];
-        // 5회 달성시 자동지급
         if (before < 5 && boardCum[bid] >= 5) {
           final['d40'] += 2;
           final['d50_onsite'] += 1;
@@ -1188,7 +1188,6 @@ function getCombinedWallet() {
       Object.keys(r.boards).forEach(bid => {
         let before = boardCum[bid] || 0;
         boardCum[bid] = before + r.boards[bid];
-        // 5회 달성시 자동지급 내역
         if (before < 5 && boardCum[bid] >= 5) {
           combined.push({
             id: 'auto_ms_' + r.id + '_' + bid,
@@ -1252,9 +1251,9 @@ function renderCoupons() {
   const bals = calculateWalletBalances();
   
   const getColor = (val) => {
-    if(val > 0) return 'var(--grn)'; 
-    if(val < 0) return 'var(--red3)'; 
-    return 'var(--txt3)'; 
+    if(val > 0) return 'var(--txt)'; 
+    if(val < 0) return '#ef4444'; 
+    return 'var(--txt4)'; 
   };
 
   document.getElementById('wallet-cards').innerHTML = CONFIG.WALLET_FIELDS.map(f => {
@@ -1265,12 +1264,12 @@ function renderCoupons() {
         <div class="wcard-header">${f.label}</div>
         <div class="wcard-body" style="flex-direction:column;">
           <div class="wcard-half" style="border-right:none; border-bottom:1px solid var(--brd2); padding:8px 0;">
-            <div class="wcard-label-curr">현재</div>
-            <div class="wcard-val" style="color:${getColor(cVal)}">${cVal}</div>
+            <div class="wcard-label-curr" style="color:var(--txt2);">현재</div>
+            <div class="wcard-val" style="color:${getColor(cVal)}; text-shadow:0 0 5px rgba(255,255,255,0.3);">${cVal}</div>
           </div>
           <div class="wcard-half" style="padding:8px 0;">
             <div class="wcard-label-final">최종</div>
-            <div class="wcard-val" style="color:var(--txt)">${fVal}</div>
+            <div class="wcard-val" style="color:var(--txt3)">${fVal}</div>
           </div>
         </div>
       </div>
@@ -1302,14 +1301,14 @@ function renderCoupons() {
         let valStr = '';
         if (w.items[f.id]) {
           const val = w.items[f.id];
-          valStr = isAdd ? `<span style="color:var(--grn2); font-weight:700;">+${val}</span>` : `<span style="color:var(--red3); font-weight:700;">-${val}</span>`;
+          valStr = isAdd ? `<span style="color:var(--txt); font-weight:700;">+${val}</span>` : `<span style="color:#ef4444; font-weight:700;">-${val}</span>`;
         }
         colHtml += `<td>${valStr}</td>`;
       });
       
       let editDelBtn = w.isAuto ? `<span style="font-size:10px; color:var(--dim); margin-left:4px;">자동 연동</span>` : `
-          <button class="btn sm" onclick="editWallet('${w.id}')" style="padding:2px 4px; margin-left:6px;">✎</button>
-          <button class="btn sm" onclick="deleteWallet('${w.id}')" style="padding:2px 4px; color:var(--red3);">✕</button>
+          <button class="btn sm" onclick="editWallet('${w.id}')" style="padding:2px 4px; margin-left:6px; color:var(--txt);">✎</button>
+          <button class="btn sm" onclick="deleteWallet('${w.id}')" style="padding:2px 4px; color:#ef4444; border-color:#ef4444;">✕</button>
       `;
 
       let ctrlHtml = `
@@ -1326,7 +1325,7 @@ function renderCoupons() {
 function initWalletForm() {
   document.getElementById('wm-coupon-inputs').innerHTML = CONFIG.WALLET_FIELDS.map(f => `
     <div style="background:var(--bg3); border:1px solid var(--brd2); padding:8px; border-radius:6px; text-align:center;">
-      <div style="font-size:10px; color:var(--txt3); margin-bottom:4px; line-height:1.2;">${f.label}</div>
+      <div style="font-size:10px; color:var(--txt2); margin-bottom:4px; line-height:1.2;">${f.label}</div>
       <input type="number" id="wm-val-${f.id}" class="finput" style="text-align:center; padding:4px; font-weight:700;" value="0" min="0">
     </div>
   `).join('');
@@ -1451,51 +1450,51 @@ function renderBoardStatus() {
     let histRows = state.records
       .filter(r => r.boards && r.boards[b.id])
       .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time))
-      .map(r => `<tr><td style="padding:4px; font-weight:600;">${r.date.substring(5).replace('-','.')}</td><td style="padding:4px;">${r.time}</td><td style="padding:4px; color:var(--red3); font-weight:700;">+${r.boards[b.id]}</td></tr>`)
+      .map(r => `<tr><td style="padding:4px; font-weight:600;">${r.date.substring(5).replace('-','.')}</td><td style="padding:4px;">${r.time}</td><td style="padding:4px; color:var(--txt); font-weight:700;">+${r.boards[b.id]}</td></tr>`)
       .join('');
     
     if(!histRows) histRows = `<tr><td colspan="3" style="padding:10px; color:var(--txt4);">적립 내역이 없습니다</td></tr>`;
 
     let markersHtml = CONFIG.STAMP_MILESTONES.map(m => {
       let mPct = (m / maxMilestone) * 100;
-      return `<div style="position:absolute; left:${mPct}%; top:-2px; bottom:-2px; width:2px; background:var(--txt2); z-index:2; border-radius:1px; opacity:0.8;"></div>`;
+      return `<div style="position:absolute; left:${mPct}%; top:-2px; bottom:-2px; width:2px; background:#fff; z-index:2; border-radius:1px; opacity:0.8; box-shadow:0 0 4px rgba(255,255,255,0.8);"></div>`;
     }).join('');
 
     const getBoardColor = (val) => {
-      if (val > 0) return 'var(--grn)';
-      return 'var(--txt3)';
+      if (val > 0) return 'var(--txt)';
+      return 'var(--txt4)';
     };
 
     let statusMsg = '';
     if (cCnt >= 5) {
-       statusMsg = `<span style="color:var(--grn);">✓ 도장판 완료 (최종 혜택 획득)</span>`;
+       statusMsg = `<span style="color:var(--txt); font-weight:700; text-shadow:0 0 5px rgba(255,255,255,0.3);">✓ 도장판 완료 (최종 혜택 획득)</span>`;
     } else if (nxt) {
-       statusMsg = `다음(${nxt}개)까지 ${nxt - cCnt}개 남음`;
+       statusMsg = `다음(${nxt}개)까지 <span style="color:var(--txt);">${nxt - cCnt}</span>개 남음`;
     } else {
-       statusMsg = `<span style="color:var(--grn);">✓ 최종 보상 달성 완료</span>`;
+       statusMsg = `<span style="color:var(--txt); font-weight:700; text-shadow:0 0 5px rgba(255,255,255,0.3);">✓ 최종 보상 달성 완료</span>`;
     }
 
-    return `<div style="background:var(--bg3); border:1px solid var(--brd2); padding:12px; border-radius:8px;">
+    return `<div style="background:var(--bg3); border:1px solid var(--brd2); padding:12px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.2);">
       <div style="margin-bottom:8px;">
         <div class="flex-between" style="margin-bottom:4px;">
           <div style="display:flex; align-items:center; gap:8px;">
-             <span style="font-weight:600; font-size:13px;">${b.name}</span>
-             <button class="btn sm ghost" style="padding:0 4px; font-size:10px; color:var(--blu2);" onclick="editBoardName('${b.id}')">수정</button>
-             <button class="btn sm ghost" style="padding:0 4px; font-size:10px; color:var(--red3);" onclick="deleteBoard('${b.id}')">삭제</button>
+             <span style="font-weight:700; font-size:13px; color:var(--txt);">${b.name}</span>
+             <button class="btn sm ghost" style="padding:0 4px; font-size:10px; color:var(--txt3);" onclick="editBoardName('${b.id}')">수정</button>
+             <button class="btn sm ghost" style="padding:0 4px; font-size:10px; color:#ef4444;" onclick="deleteBoard('${b.id}')">삭제</button>
           </div>
           <span style="font-size:10px; color:var(--txt4); cursor:pointer;" onclick="toggleCollapsible('board-hist-${b.id}')">상세 ▼</span>
         </div>
-        <div style="font-size:11px; color:var(--txt4);">
-          현재 <span style="font-size:16px; color:${getBoardColor(cCnt)}; font-weight:700; font-family:'IBM Plex Sans KR';">${cCnt}</span> / 최종 <span style="font-size:16px; color:var(--txt); font-weight:700; font-family:'IBM Plex Sans KR';">${fCnt}</span>
+        <div style="font-size:11px; color:var(--txt3);">
+          현재 <span style="font-size:16px; color:${getBoardColor(cCnt)}; font-weight:700; font-family:'IBM Plex Sans KR'; text-shadow:0 0 5px rgba(255,255,255,0.2);">${cCnt}</span> / 최종 <span style="font-size:16px; color:var(--txt3); font-weight:700; font-family:'IBM Plex Sans KR';">${fCnt}</span>
         </div>
       </div>
-      <div style="font-size:10px; color:var(--txt3); margin-bottom:6px;">
+      <div style="font-size:10px; color:var(--txt2); margin-bottom:6px;">
         ${statusMsg}
       </div>
       
-      <div style="height:6px; background:var(--bg4); border-radius:3px; position:relative;">
+      <div style="height:6px; background:var(--bg4); border-radius:3px; position:relative; box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);">
         ${markersHtml}
-        <div style="position:absolute; left:0; top:0; bottom:0; width:${pct}%; background:var(--grn); border-radius:3px; z-index:1; transition:width 0.3s ease;"></div>
+        <div style="position:absolute; left:0; top:0; bottom:0; width:${pct}%; background:var(--txt); border-radius:3px; z-index:1; transition:width 0.3s ease; box-shadow:0 0 8px rgba(255,255,255,0.5);"></div>
       </div>
       
       <div id="board-hist-${b.id}" class="collapsible-content" style="margin-top:10px; border-top:1px dashed var(--brd2); padding-top:10px;">
@@ -1543,9 +1542,9 @@ function renderStats() {
   }
 
   let actorStatsHtml = `<tr>
-    <th style="color:var(--txt3); width:30%;">배역</th>
-    <th style="color:var(--txt3); width:40%;">배우</th>
-    <th style="color:var(--txt3); width:30%;">관람 횟수</th>
+    <th style="color:var(--txt2); width:30%;">배역</th>
+    <th style="color:var(--txt2); width:40%;">배우</th>
+    <th style="color:var(--txt2); width:30%;">관람 횟수</th>
   </tr>`;
   
   CONFIG.ROLES.forEach((role, idx) => {
@@ -1560,10 +1559,10 @@ function renderStats() {
       ).length;
       
       actorStatsHtml += `<tr>`;
-      if (aIdx === 0) actorStatsHtml += `<td rowspan="${role.actors.length}" style="font-weight:700; color:var(--txt2); vertical-align:middle; background:var(--bg3); border-right:1px solid var(--brd);">${role.label}</td>`;
-      actorStatsHtml += `<td style="font-weight:600;">${actor}</td>
+      if (aIdx === 0) actorStatsHtml += `<td rowspan="${role.actors.length}" style="font-weight:700; color:var(--txt); vertical-align:middle; background:var(--bg3); border-right:1px solid var(--brd);">${role.label}</td>`;
+      actorStatsHtml += `<td style="font-weight:600; color:var(--txt2);">${actor}</td>
       <td>
-        <span style="color:var(--red3); font-weight:700;">${myCnt}</span>
+        <span style="color:var(--red); font-weight:700; text-shadow:0 0 3px rgba(252,238,167,0.4);">${myCnt}</span>
         <span style="color:var(--txt4); font-weight:400; font-size:11px;"> / ${totalCnt}</span>
       </td></tr>`;
     });
@@ -1589,7 +1588,7 @@ function renderStats() {
 
   let hmHtml = '';
   THEATER_ZONES.forEach(z => { 
-    hmHtml += `<div class="zone-col"><div style="font-size:11px; font-weight:700; color:var(--txt3); margin-bottom:4px;">${z.name}</div>`;
+    hmHtml += `<div class="zone-col"><div style="font-size:11px; font-weight:700; color:var(--txt); margin-bottom:4px; text-shadow:0 0 3px rgba(255,255,255,0.3);">${z.name}</div>`;
     z.rows.forEach(rowLetter => {
       hmHtml += `<div class="seat-row"><div class="row-label">${rowLetter}</div>`;
       for (let col = 1; col <= z.maxCols; col++) {
@@ -1629,10 +1628,10 @@ function renderStats() {
     const evName = getEventName(r.date);
     return `<tr>
       <td onclick="openDetailModal('${r.id}')" style="cursor:pointer; text-decoration:underline; text-underline-offset:2px; color:var(--txt); font-weight:600;">${shortDate}</td>
-      <td>${r.time}</td>
-      <td style="color:var(--red3); font-weight:600;">${castStr}</td>
-      <td style="font-size:11px;">${longSeatStr}</td>
-      <td style="font-size:11px; color:var(--grn); font-weight:600; white-space:normal; line-height:1.2;">${evName}</td>
+      <td style="color:var(--txt2);">${r.time}</td>
+      <td style="color:var(--red); font-weight:600;">${castStr}</td>
+      <td style="font-size:11px; color:var(--txt2);">${longSeatStr}</td>
+      <td style="font-size:11px; color:var(--txt); font-weight:600; white-space:normal; line-height:1.2;">${evName}</td>
     </tr>`;
   }).join('');
   
