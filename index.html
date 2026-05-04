@@ -406,10 +406,6 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <label class="flbl">메모</label>
       <input type="text" id="rm-memo" class="finput" placeholder="메모를 입력하세요" style="text-transform:none;">
     </div>
-    <div style="display:flex; gap:10px; margin-top:20px;">
-      <button class="btn" style="flex:1;" onclick="closeModal('modal-record')">취소</button>
-      <button class="btn prim" style="flex:1;" onclick="saveRecord()">저장</button>
-    </div>
 
     <!-- 예매 내역/티켓 첨부 추가 -->
     <div class="fg">
@@ -422,6 +418,10 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       </div>
     </div>
 
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button class="btn" style="flex:1;" onclick="closeModal('modal-record')">취소</button>
+      <button class="btn prim" style="flex:1;" onclick="saveRecord()">저장</button>
+    </div>
     
   </div>
 </div>
