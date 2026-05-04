@@ -93,15 +93,19 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
 .modal { background:var(--bg2); border-top:2px solid var(--red); width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:20px; border-radius:16px 16px 0 0; animation:slideUp 0.3s ease; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
 @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
 
-.overlay.center { align-items:center; padding:20px; }
+.overlay.center { align-items:center; padding:20px; z-index:250; }
 .modal.center { border-radius:16px; border:1px solid var(--brd2); animation:popIn 0.2s ease; margin:auto; width:100%; max-width:400px; }
 @keyframes popIn { from { transform:scale(0.95); opacity:0; } to { transform:scale(1); opacity:1; } }
 
 .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .detail-date-title { font-size: 18px; font-weight: 700; color: var(--txt); font-family: 'IBM Plex Sans KR', sans-serif; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
 .detail-info-row { font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; }
-.dt-label { color: var(--red); font-weight: 600; margin-right: 12px; width: 40px; text-shadow: 0 0 5px rgba(252,238,167,0.3); }
-.dt-value { color: var(--txt); font-weight: 600; }
+.dt-label { color: var(--red); font-weight: 600; margin-right: 12px; width: 60px; text-shadow: 0 0 5px rgba(252,238,167,0.3); }
+.dt-value { color: var(--txt); font-weight: 600; flex:1; }
+
+/* TICKET BUTTON */
+.btn-ticket { width:32px; height:32px; border-radius:50%; background:var(--bg4); border:1px solid var(--red2); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 0 8px rgba(252,238,167,0.2); transition:all 0.2s; }
+.btn-ticket:hover { background:var(--bg3); transform:scale(1.05); }
 
 /* CALENDAR & EVENTS */
 .cal-filter-group { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
@@ -380,6 +384,17 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       </div>
     </div>
 
+    <!-- 예매 내역/티켓 첨부 추가 -->
+    <div class="fg">
+      <label class="flbl">예매 내역/티켓 첨부 (선택)</label>
+      <div style="font-size:10px; color:var(--txt4); margin-top:-3px; margin-bottom:5px;">* 첨부된 이미지는 저장소 보호를 위해 자동 압축됩니다.</div>
+      <input type="file" id="rm-receipt" accept="image/*" class="finput" style="padding:6px; font-size:12px; text-transform:none;" onchange="handleImageUpload(event)">
+      <div id="rm-receipt-preview" style="margin-top:8px; display:none; position:relative; width:max-content;">
+         <img id="rm-receipt-img" src="" style="max-height:120px; border-radius:6px; border:1px solid var(--brd2);">
+         <button type="button" onclick="clearReceipt()" style="position:absolute; top:-8px; right:-8px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:22px; height:22px; font-size:11px; font-weight:bold; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.3);">X</button>
+      </div>
+    </div>
+
     <div class="fg">
       <label class="flbl">도장판 선택</label>
       <div id="rm-boards" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
@@ -424,12 +439,30 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <span id="dt-seat" class="dt-value"></span>
     </div>
     
+    <!-- DETAILS (티켓 첨부 뷰어) 행 -->
+    <div class="detail-info-row" id="dt-details-row" style="display:none; margin-bottom:16px;">
+      <span class="dt-label">DETAILS</span>
+      <div class="dt-value">
+        <button type="button" class="btn-ticket" onclick="openReceiptViewer()" title="티켓/내역서 보기">
+           <span style="font-size:16px; margin-top:-1px;">🎫</span>
+        </button>
+      </div>
+    </div>
+    
     <div id="dt-minimap"></div>
     
     <div style="display:flex; gap:10px; margin-top:16px;">
       <button class="btn" style="flex:1; color:var(--txt);" id="dt-btn-edit">수정</button>
       <button class="btn" style="flex:1; background:#ef4444; color:#fff; font-weight:700; border:none;" id="dt-btn-delete">삭제</button>
     </div>
+  </div>
+</div>
+
+<!-- 내역서/티켓 이미지 뷰어 팝업 -->
+<div class="overlay center" id="modal-image-viewer" onclick="if(event.target===this) closeModal('modal-image-viewer')" style="z-index:300;">
+  <div style="position:relative; max-width:90vw; max-height:90vh; display:flex; justify-content:center; align-items:center;">
+     <button onclick="closeModal('modal-image-viewer')" style="position:absolute; top:-15px; right:-15px; background:var(--bg2); border:1px solid var(--brd2); color:var(--txt); width:32px; height:32px; border-radius:50%; cursor:pointer; font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.5);">✕</button>
+     <img id="viewer-img" src="" style="max-width:100%; max-height:85vh; border-radius:8px; box-shadow:0 5px 20px rgba(0,0,0,0.8); object-fit:contain;">
   </div>
 </div>
 
@@ -481,8 +514,6 @@ const CONFIG = {
   
   DISCOUNTS: [
     { label: "없음", value: "" },
-    { label: "프리뷰", value: "프리뷰" },
-    { label: "조예할", value: "조예할" },
     { label: "재관할", value: "재관할", useWallet: "re" },
     { label: "40% 할인권", value: "40%", useWallet: "d40" },
     { label: "현장예매 50% 할인권", value: "50%", useWallet: "d50_onsite" },
@@ -562,6 +593,10 @@ let calFilters = {};
 CONFIG.ROLES.forEach((r, idx) => { calFilters[`cast${idx+1}`] = []; });
 let hideExchange = false;
 
+// 이미지 처리 전역 변수
+let currentReceiptBase64 = "";
+let currentViewReceipt = "";
+
 function loadState() {
   const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
   if(saved) {
@@ -610,6 +645,53 @@ function toggleExchangeFilter() {
 function formatDiscount(val) {
   if (val === '교환/나눔') return '교환'; 
   return val || '-';
+}
+
+// ============================================================
+// IMAGE UPLOAD & COMPRESSION
+// ============================================================
+function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 800; 
+      let width = img.width;
+      let height = img.height;
+
+      if (width > MAX_WIDTH) {
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      currentReceiptBase64 = canvas.toDataURL('image/jpeg', 0.7); 
+      document.getElementById('rm-receipt-img').src = currentReceiptBase64;
+      document.getElementById('rm-receipt-preview').style.display = 'block';
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+
+function clearReceipt() {
+  currentReceiptBase64 = "";
+  document.getElementById('rm-receipt').value = "";
+  document.getElementById('rm-receipt-preview').style.display = 'none';
+}
+
+function openReceiptViewer() {
+  if(!currentViewReceipt) return;
+  document.getElementById('viewer-img').src = currentViewReceipt;
+  openModal('modal-image-viewer');
 }
 
 // ============================================================
@@ -808,6 +890,8 @@ function openRecordModal(date = '', isEdit = false) {
   document.getElementById('rm-row').value = "";
   document.getElementById('rm-num').value = "";
   document.getElementById('rm-memo').value = "";
+  
+  clearReceipt();
 
   selectMult(1); 
   renderBoardCheckboxesInModal(""); 
@@ -838,6 +922,7 @@ function saveRecord() {
     seatRow: document.getElementById('rm-row').value.toUpperCase(),
     seatNum: document.getElementById('rm-num').value,
     boards: boardsData,
+    receipt: currentReceiptBase64,
     memo: document.getElementById('rm-memo').value
   };
 
@@ -875,6 +960,14 @@ function editRecord(id) {
   document.getElementById('rm-row').value = r.seatRow || "";
   document.getElementById('rm-num').value = r.seatNum || "";
   document.getElementById('rm-memo').value = r.memo || "";
+
+  if (r.receipt) {
+    currentReceiptBase64 = r.receipt;
+    document.getElementById('rm-receipt-img').src = currentReceiptBase64;
+    document.getElementById('rm-receipt-preview').style.display = 'block';
+  } else {
+    clearReceipt();
+  }
 
   let assumedMult = 1;
   let selectedId = "";
@@ -924,6 +1017,16 @@ function openDetailModal(id) {
   }
   
   document.getElementById('dt-seat').textContent = seatStr;
+  
+  const detailsRow = document.getElementById('dt-details-row');
+  if (r.receipt) {
+    currentViewReceipt = r.receipt;
+    detailsRow.style.display = 'flex';
+  } else {
+    currentViewReceipt = "";
+    detailsRow.style.display = 'none';
+  }
+  
   document.getElementById('dt-minimap').innerHTML = renderMiniMap(r.seatZone, r.seatRow, parseInt(r.seatNum));
 
   document.getElementById('dt-btn-edit').onclick = () => { closeModal('modal-detail'); editRecord(id); };
@@ -940,6 +1043,7 @@ function renderMiniMap(selZone, selRow, selNum) {
     hmHtml += `<div style="font-size:11px; font-weight:700; color:var(--txt2); margin-bottom:8px;">${z.name}</div>`;
     hmHtml += `<div style="display:flex; gap:10px; align-items:flex-start;">`;
     
+    // 좌측 V구역
     if (z.left) {
       hmHtml += `<div style="display:flex; flex-direction:column; gap:2px; align-items:center;">`;
       hmHtml += `<div class="mini-row-label" style="margin:0 0 4px 0;">${z.left.id}</div>`;
@@ -954,6 +1058,7 @@ function renderMiniMap(selZone, selRow, selNum) {
       hmHtml += `</div>`;
     }
 
+    // 중앙 본 구역
     hmHtml += `<div class="zone-col" style="gap:2px;">`;
     z.rows.forEach(rowInfo => {
       hmHtml += `<div class="mini-seat-row"><div class="mini-row-label">${rowInfo.id}</div>`;
@@ -971,6 +1076,7 @@ function renderMiniMap(selZone, selRow, selNum) {
     });
     hmHtml += `</div>`;
 
+    // 우측 W구역
     if (z.right) {
       hmHtml += `<div style="display:flex; flex-direction:column; gap:2px; align-items:center;">`;
       hmHtml += `<div class="mini-row-label" style="margin:0 0 4px 0;">${z.right.id}</div>`;
