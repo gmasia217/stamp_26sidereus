@@ -1192,7 +1192,8 @@ function renderCalendar() {
   const evts = state.events && state.events.length ? state.events : [];
   const segments = [];
   
-  CONFIG.EVENTS.forEach(ev => {
+  // ▼ 불러온 파일 데이터(evts)를 읽도록 수정!
+  evts.forEach(ev => { 
     if (ev.endDate < monthStart || ev.startDate > monthEnd) return;
     const clampedStart = ev.startDate < monthStart ? monthStart : ev.startDate;
     const clampedEnd   = ev.endDate   > monthEnd   ? monthEnd   : ev.endDate;
