@@ -443,9 +443,17 @@ table.record-tb { width:max-content; min-width:100%; border-collapse:separate; b
       <span id="dt-seat" class="dt-value"></span>
     </div>
     
+    <!-- 새로 추가된 EVENT 행 -->
+    <div class="detail-info-row" id="dt-event-row" style="display:none;">
+      <span class="dt-label">EVENT</span>
+      <span id="dt-event" class="dt-value" style="color:var(--txt2); font-size:13px;"></span>
+    </div>
+    
+    <!-- DETAIL (티켓 첨부 뷰어) 행 (텍스트 변경) -->
     <div class="detail-info-row" id="dt-details-row" style="display:none; margin-bottom:16px;">
-      <span class="dt-label">DETAILS</span>
+      <span class="dt-label">DETAIL</span>
       <div class="dt-value">
+        
         <button type="button" class="btn-ticket" onclick="openReceiptViewer()" title="티켓/내역서 보기">
            <span style="font-size:16px; margin-top:-1px;">🎫</span>
         </button>
@@ -1066,7 +1074,22 @@ function openDetailModal(id) {
     currentViewReceipt = "";
     detailsRow.style.display = 'none';
   }
-  
+
+  // --- (추가된 부분) 이벤트 내역 가져오기 ---
+  const getEvName = (d) => {
+    const evs = state.events.filter(e => d >= e.startDate && d <= e.endDate);
+    return evs.map(e => e.name).join(', ') || '-';
+  };
+  const evName = getEvName(r.date);
+  const eventRow = document.getElementById('dt-event-row');
+  if (evName !== '-') {
+    document.getElementById('dt-event').textContent = evName;
+    eventRow.style.display = 'flex';
+  } else {
+    eventRow.style.display = 'none';
+  }
+  // ------------------------------------------
+
   document.getElementById('dt-minimap').innerHTML = renderMiniMap(r.seatZone, r.seatRow, parseInt(r.seatNum));
 
   document.getElementById('dt-btn-edit').onclick = () => { closeModal('modal-detail'); editRecord(id); };
@@ -1918,7 +1941,7 @@ function renderStats() {
       <td style="color:var(--txt2);">${r.time}</td>
       <td style="color:var(--red); font-weight:600;">${castStr}</td>
       <td style="font-size:11px; color:var(--txt2);">${longSeatStr}</td>
-      <td style="font-size:11px; color:var(--txt); font-weight:600; white-space:normal; line-height:1.2;">${evName}</td>
+      <td style="font-size:11px; color:var(--txt); font-weight:600; white-space:nowrap; line-height:1.2;">${evName}</td>
     </tr>`;
   }).join('');
   
