@@ -1,3 +1,4 @@
 [
-  { "name": "프리뷰", "startDate": "2026-06-04", "endDate": "2026-06-10", "color": "#4CAF50" }
+  { "name": "프리뷰", "startDate": "2026-06-04", "endDate": "2026-06-10", "color": "#cbd5e1" },
+  { "name": "커튼콜 촬영 위크", "startDate": "2026-06-16", "endDate": "2026-06-21", "color": "#fceea7" }
 ]
