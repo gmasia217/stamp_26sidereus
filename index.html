@@ -1233,7 +1233,7 @@ function renderCalendar() {
         if (!conflict) break;
         row++;
       }
-      if (row < 3) segments.push({ week: w, startCol: sc, endCol: ec, color: ev.color, name: ev.name, row });
+      if (row < 3) segments.push({ week: w, startCol: sc, endCol: ec, color: ev.color, name: ev.name, url: ev.url, row });
     }
   });
 
@@ -1340,7 +1340,12 @@ function renderCalendar() {
         wSegs.filter(s => s.row === row).forEach(s => {
           const leftPct  = (s.startCol / 7 * 100).toFixed(2);
           const widthPct = ((s.endCol - s.startCol + 1) / 7 * 100).toFixed(2);
-          html += `<div style="position:absolute; left:${leftPct}%; width:calc(${widthPct}% - 2px); height:14px; background:${s.color}; border-radius:2px; display:flex; align-items:center; padding:0 4px; overflow:hidden; box-shadow: 0 0 5px rgba(255,255,255,0.2);">
+          
+          // 링크가 있으면 클릭 이벤트와 포인터 커서 추가
+          const clickAction = s.url ? `onclick="window.open('${s.url}', '_blank'); event.stopPropagation();"` : '';
+          const pointerStyle = s.url ? 'pointer-events:auto; cursor:pointer;' : 'pointer-events:auto;';
+
+          html += `<div ${clickAction} style="position:absolute; left:${leftPct}%; width:calc(${widthPct}% - 2px); height:14px; background:${s.color}; border-radius:2px; display:flex; align-items:center; padding:0 4px; overflow:hidden; box-shadow: 0 0 5px rgba(255,255,255,0.2); ${pointerStyle}">
             <span style="font-size:9px; font-weight:700; color:#111; white-space:nowrap;">${s.name}</span>
           </div>`;
         });
