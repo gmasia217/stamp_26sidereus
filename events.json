@@ -5,8 +5,14 @@
   { "name": "시데레우스 모의고사 이벤트", "startDate": "2026-06-23", "endDate": "2026-06-28", "color": "#6ee7b7", "url": "https://x.com/companyrang/status/2068937028373230078?s=20" },
   { "name": "스페셜 커튼콜 위크 #1", "startDate": "2026-06-30", "endDate": "2026-07-05", "color": "#93c5fd", "url": "https://x.com/companyrang/status/2067486245136286140?s=20" },
   { "name": "공연 사진 엽서 증정", "startDate": "2026-07-04", "endDate": "2026-07-05", "color": "#fed7aa", "url": "https://x.com/companyrang/status/2069963823243751679?s=20" },
+  { "name": "크로스 스페셜 커튼콜", "startDate": "2026-07-07", "endDate": "2026-07-08", "color": "#d9f99d" },
+  { "name": "스페셜 MD 어셔", "startDate": "2026-07-09", "endDate": "2026-07-09", "color": "#a5f3fc" },
   { "name": "공연 사진 엽서 증정", "startDate": "2026-07-07", "endDate": "2026-07-11", "color": "#fed7aa", "url": "https://x.com/companyrang/status/2069963823243751679?s=20" },
   { "name": "폴라로이드 사진 증정", "startDate": "2026-07-11", "endDate": "2026-07-12", "color": "#a5b4fc", "url": "https://x.com/companyrang/status/2069963823243751679?s=20" },
   { "name": "관객과의 대화", "startDate": "2026-07-28", "endDate": "2026-07-29", "color": "#f9a8d4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" },
-  { "name": "전관", "startDate": "2026-08-05", "endDate": "2026-08-06", "color": "#5eead4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" }
+  { "name": "전관", "startDate": "2026-08-05", "endDate": "2026-08-06", "color": "#5eead4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" },
+  { "name": "하이파이브 이벤트", "startDate": "2026-07-15", "endDate": "2026-07-15", "color": "#fca5a5" },
+  { "name": "스페셜 MD 어셔", "startDate": "2026-07-16", "endDate": "2026-07-16", "color": "#a5f3fc" },
+  { "name": "스페셜 MD 어셔", "startDate": "2026-07-18", "endDate": "2026-07-18", "color": "#a5f3fc" },
+  { "name": "크로스 스페셜 커튼콜", "startDate": "2026-07-19", "endDate": "2026-07-19", "color": "#d9f99d" }
 ]
