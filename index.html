@@ -753,7 +753,7 @@ function renderRecords() {
   });
   
   if (hideExchange) {
-    sorted = sorted.filter(r => r.discount !== '교환' && r.discount !== '교환/나눔');
+    sorted = sorted.filter(r => r.discount !== '교환' && r.discount !== '교환/나눔' && r.discount !== '나눔' && r.discount !== '도장 나눔');
   }
 
   let boardCum = {};
@@ -761,7 +761,7 @@ function renderRecords() {
 
   // 'NEXT' 계산: 교환, 나눔표 제외한 실제 관람 중 오늘 포함 가장 빠른 미래 회차
   const todayD = todayStr();
-  const closestRecord = sorted.find(r => r.date >= todayD && !['교환', '교환/나눔', '나눔'].includes(r.discount));
+  const closestRecord = sorted.find(r => r.date >= todayD && !['교환', '교환/나눔', '나눔', '도장 나눔'].includes(r.discount));
   const closestId = closestRecord ? closestRecord.id : null;
 
   sorted.forEach(r => {
@@ -796,7 +796,8 @@ function renderRecords() {
     }
 
     const dispDisc = formatDiscount(r.discount);
-    const isExchange = (r.discount === '교환' || r.discount === '교환/나눔');
+    // '도장 나눔'도 '교환'처럼 옅게 표시되도록 추가
+    const isExchange = (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔' || r.discount === '도장 나눔');
     const dimCls = isExchange ? 'opacity: 0.3;' : '';
     
     const isClosest = (r.id === closestId);
@@ -1285,7 +1286,7 @@ function renderCalendar() {
       dayItems = dayItems.filter(i => {
          let keepForRecord = true;
          if (i.records && i.records.length > 0) {
-           const nonExchangeRecords = i.records.filter(r => r.discount !== '교환' && r.discount !== '교환/나눔');
+           const nonExchangeRecords = i.records.filter(r => r.discount !== '교환' && r.discount !== '교환/나눔' && r.discount !== '나눔' && r.discount !== '도장 나눔');
            if (nonExchangeRecords.length > 0) {
              i.isBooked = true;
              const hasSeat = nonExchangeRecords.some(r => r.seatZone && r.seatZone.trim() !== "");
