@@ -532,7 +532,8 @@ const CONFIG = {
     { label: "40% 할인권", value: "40%", useWallet: "d40" },
     { label: "현장예매 50% 할인권", value: "50%", useWallet: "d50_onsite" },
     { label: "타임세일", value: "타임세일" },
-    { label: "나눔", value: "나눔" },
+    { label: "자리 나눔", value: "자리 나눔" },
+    { label: "도장 나눔", value: "도장 나눔" },
     { label: "교환", value: "교환" }
   ],
   
@@ -682,6 +683,7 @@ function toggleExchangeFilter() {
 
 function formatDiscount(val) {
   if (val === '교환/나눔') return '교환'; 
+  if (val === '나눔') return '도장 나눔'; // 기존 데이터 호환용
   return val || '-';
 }
 
@@ -1386,7 +1388,7 @@ function calculateWalletBalances() {
   let sortedRecords = [...state.records].sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
 
   sortedRecords.forEach(r => {
-    const isNoReward = (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔');
+    const isNoReward = (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔' || r.discount === '도장 나눔');
 
     if (!isNoReward) {
       final['re'] += 1;
@@ -1434,7 +1436,7 @@ function getCombinedWallet() {
   let sortedRecords = [...state.records].sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
 
   sortedRecords.forEach(r => {
-    const isNoReward = (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔');
+    const isNoReward = (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔' || r.discount === '도장 나눔');
 
     if (!isNoReward) {
       const dateParts = r.date.split('-');
@@ -1794,7 +1796,7 @@ function renderStats() {
   let grouped = {};
 
   state.records.forEach(r => {
-    if (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔') return;
+    if (r.discount === '교환' || r.discount === '교환/나눔' || r.discount === '나눔' || r.discount === '도장 나눔') return;
     if (!r.seatZone || r.seatZone.trim() === "") return;
     
     let k = r.date + '_' + r.time;
