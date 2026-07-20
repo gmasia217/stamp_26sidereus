@@ -17,6 +17,10 @@
   { "name": "커튼콜 촬영 위크", "startDate": "2026-07-22", "endDate": "2026-07-25", "color": "#fceea7", "url": "https://x.com/companyrang/status/2075090476605280446?s=20" },
   { "name": "막공 무대인사", "startDate": "2026-07-26", "endDate": "2026-07-26", "color": "#f0abfc", "url": "https://x.com/companyrang/status/2075090476605280446?s=20" },
   { "name": "관객과의 대화", "startDate": "2026-07-28", "endDate": "2026-07-29", "color": "#f9a8d4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" },
+  { "name": "스페셜 커튼콜 위크 #2", "startDate": "2026-07-30", "endDate": "2026-08-02", "color": "#93c5fd", "url": "https://x.com/companyrang/status/2079038611736117629?s=20" },
+  { "name": "스페셜 커튼콜 위크 #2", "startDate": "2026-08-04", "endDate": "2026-08-04", "color": "#93c5fd", "url": "https://x.com/companyrang/status/2079038611736117629?s=20" },
   { "name": "그래이공 전관", "startDate": "2026-08-05", "endDate": "2026-08-06", "color": "#5eead4", "url": "https://x.com/culture9uide/status/2073950153560760511?s=20" },
-  { "name": "전관", "startDate": "2026-08-19", "endDate": "2026-08-20", "color": "#5eead4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" }
+  { "name": "500회 공연 무대인사", "startDate": "2026-08-07", "endDate": "2026-08-07", "color": "#f0abfc", "url": "https://x.com/companyrang/status/2079038611736117629?s=20" },
+  { "name": "스페셜 커튼콜 위크 #2", "startDate": "2026-08-08", "endDate": "2026-08-09", "color": "#93c5fd", "url": "https://x.com/companyrang/status/2079038611736117629?s=20" },
+  { "name": "피처링 전관", "startDate": "2026-08-19", "endDate": "2026-08-20", "color": "#5eead4", "url": "https://x.com/companyrang/status/2069269647166464471?s=20" }
 ]
